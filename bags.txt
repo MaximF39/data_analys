@@ -1,0 +1,1 @@
+In the original module of kivyMd there is a mistake of initializing TableRecycleGridLayout - you need to change value of "orientation" to "lr-tb" line 167 kivymd.uix.datatables
