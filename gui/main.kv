@@ -1,5 +1,5 @@
 #:kivy 2.0
-#: import Window kivy.core.window.Window
+#:import Window kivy.core.window.Window
 #:set SYSTEM_BAR_HEIGHT 30
 #:set IMAGE_TOOLBAR_WIDTH 40
 #:set SYSTEM_INFO_BAR_HEIGHT 20
@@ -10,22 +10,22 @@ FloatLayout:
         BoxLayout:
             padding: 10,10,10,10
             orientation: "vertical"  
-            DropAnchorLayout:
-                id: dataStore
-                dataTabs: dataTabs
-                pathInfo: pathInfo
-                canvas.before:
-                    Color:
-                        rgb: .3,.3,.3
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
             Tabs:
                 id: dataTabs
                 dataStore: dataStore
                 pathInfo: pathInfo
                 size_hint_y: None
                 height: 35
+                canvas.before:
+                    Color:
+                        rgb: .3,.3,.3
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            DataStore:
+                id: dataStore
+                dataTabs: dataTabs
+                pathInfo: pathInfo
                 canvas.before:
                     Color:
                         rgb: .3,.3,.3
@@ -57,26 +57,13 @@ FloatLayout:
         size_hint_y: None
         height: Window.height - SYSTEM_BAR_HEIGHT
         DataToolbar:
-            orientation: "vertical"
-            size_hint: None, None
-            width: IMAGE_TOOLBAR_WIDTH
-            height: 500
-            canvas.before:
-                Color:
-                    rgb: .3,.3,.3
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
+            id: dataToolbar
+            dataStore: dataStore
             DataToolbarItem:
-                MDTextButton:
-                    text: 'File'
             DataToolbarItem:
-                MDTextButton:
-                    text: 'File'
             DataToolbarItem:
-                MDTextButton:
-                    text: 'File'
+                id: createDescription
+                on_release: dataToolbar.create_description()
 
     BoxLayout:
         id: sistemInfoBar
