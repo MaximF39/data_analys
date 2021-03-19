@@ -18,10 +18,11 @@ Builder.load_string(
     orientation: "horizontal"
     ShortenLabel:
         id: tab_label_inst
-        text: ''
         halign:'center'
         valign:'center'
         font_style: "Body2"
+        theme_text_color: "Custom"
+        text_color: .9,.9,.9,1
     MDIconButton:
         icon: "close"
         ripple_rad_default: 0.5
@@ -120,8 +121,8 @@ class Tabs(MDStackLayout, TabSwitchBehavior):
 
     prev_tab_idx = None
 
-    tab_active_color: tuple = (0.3, 0.3 ,0.3, 1)
-    tab_normal_color: tuple = (0.55, 0.55, 0.55, 1)
+    tab_active_color: tuple = (0.55, 0.55 ,0.55, 1)
+    tab_normal_color: tuple = (0.3, 0.3, 0.3, 1)
 
     tab_states = {
         "down": tab_active_color,
@@ -155,11 +156,11 @@ class Tabs(MDStackLayout, TabSwitchBehavior):
 
     def set_current_active_tab(self, tab):
         try:
-            self.curr_tab_idx.set_state('down', self.tab_states['down'])
+            self.curr_tab_idx.set_state('up', self.tab_states['up'])
         except AttributeError:
             # curr_tab_idx is None
             pass
-        tab.set_state('up', self.tab_states['up'])
+        tab.set_state('down', self.tab_states['down'])
         self.prev_tab_idx = self.curr_tab_idx
         self.curr_tab_idx= tab
     
