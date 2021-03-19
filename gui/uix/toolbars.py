@@ -3,8 +3,11 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
 from kivymd.uix.boxlayout import BoxLayout
-from kivymd.uix.button import MDTextButton
+from kivymd.uix.button import MDIconButton
 from gui.uix.datatabledescr import DataTableDescription
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
 
 Builder.load_string(
 """
@@ -19,9 +22,6 @@ Builder.load_string(
         Rectangle:
             size: self.size
             pos: self.pos
-
-<DataToolbarItem>:
-    text: 'File'
 """
 )
 from kivy.uix.behaviors import ButtonBehavior
@@ -44,5 +44,6 @@ class DataToolbar(BoxLayout):
             )
             self.dataStore.place_new_tab(index, metric)
 
-class DataToolbarItem(MDTextButton):
+
+class DataToolbarItem(MDIconButton):
     pass

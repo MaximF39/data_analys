@@ -12,11 +12,10 @@ class DataStore(
     BaseDropBehaviour,
     SwitchTableBehaviour,
     MetricsWidgets,
-    ):
-    
+):
     supported_ext: tuple = (
         "csv",
-        )
+    )
     support_all_files: bool = False
 
     data_tables: dict = {}
@@ -44,7 +43,7 @@ class DataStore(
         super().__init__(**kwargs)
         self.register_event_type('on_delete_tab')
 
-    def on_drop_file(self, filepath:str):
+    def on_drop_file(self, filepath: str):
         """ Reads the file, make DataTable and shows it """
         if self.__same_data(filepath):
             return
@@ -69,11 +68,11 @@ class DataStore(
             raise KeyError('there is same key in the data_table')
         return table_index
 
-    def __same_data(self, filepath:str):
+    def __same_data(self, filepath: str):
         """ Checks if Datable is already on the screen, if so, shows it """
         for index, table in self.data_tables.items():
             if table.filepath == filepath:
-                self.dispatch("on_table_switch", table_index)
+                self.dispatch("on_table_switch", index)
                 self.dataTabs.to_tab_by_index(index)
                 return True
         return False
@@ -81,8 +80,22 @@ class DataStore(
     def on_delete_tab(self, index: str):
         """ Calls when tab is deleted """
         try:
-            table = self.data_tables[index] #!
+            table = self.data_tables[index]  # !
             self.remove_widget(table)
             del self.data_tables[index]
         except KeyError:
             pass
+'''
+    def on_edit_table(self, index: str, filepath: str) -> str:
+        table_index = str(self.max_index)
+        if not self.data_tables.get(table_index):
+            table = self.base_table(
+                filepath=filepath,
+                data=pd.read_csv(filepath, sep=",", header=0)
+            )
+            self.data_tables[table_index] = table
+            self.max_index += 1
+        else:
+            raise KeyError('there is same key in the data_table')
+        return table_index
+'''

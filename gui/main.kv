@@ -1,7 +1,7 @@
 #:kivy 2.0
 #:import Window kivy.core.window.Window
 #:set SYSTEM_BAR_HEIGHT 30
-#:set IMAGE_TOOLBAR_WIDTH 40
+#:set IMAGE_TOOLBAR_WIDTH 50
 #:set SYSTEM_INFO_BAR_HEIGHT 20
 
 FloatLayout:
@@ -60,11 +60,19 @@ FloatLayout:
             id: dataToolbar
             dataStore: dataStore
             DataToolbarItem:
+                icon: "icon/original.png"
             DataToolbarItem:
+                icon: "icon/modified.png"
             DataToolbarItem:
-                id: createDescription
+                icon: "icon/Graph.png"
+            DataToolbarItem:
+                id: info
+                icon: "icon/info.png"
                 on_release: dataToolbar.create_description()
-
+            DataToolbarItem:
+                icon: "icon/settings.png"
+            DataToolbarItem:
+                icon: "icon/quit.png"
     BoxLayout:
         id: sistemInfoBar
         orientation: "horizontal"

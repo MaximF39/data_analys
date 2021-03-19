@@ -143,7 +143,7 @@ class Tabs(MDStackLayout, TabSwitchBehavior):
 
     prev_active_tab = None
 
-    tab_active_color: tuple = (0.3, 0.3 ,0.3, 1)
+    tab_active_color: tuple = (0.3, 0.3, 0.3, 1)
     tab_normal_color: tuple = (0.55, 0.55, 0.55, 1)
 
     tab_states = {
