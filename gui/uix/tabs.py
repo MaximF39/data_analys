@@ -79,34 +79,35 @@ class Tab(BoxLayout):
         self.width = 170
         self.parent_ = parent_
         self.index = index
+        """ Index of the dataBox """
         self.filepath = filepath
         self.tab_label_inst.parent_ = self
         self.tab_label_inst.update_text(filepath)
-        self.create_menu()
-        """ Index of the dataBox """
+        # self.create_menu()
 
-    def create_menu(self):
-        menu_items = [
-            {"text": f"{i}"}
-            for i in range(
-                10
-            )
-        ]
-        self.tab_menu = MDDropdownMenu(
-            caller=self,
-            items=menu_items,
-            use_icon_item=False,
-            position="auto",
-            max_height=300,
-            # callback=self.table_data.set_number_displayed_lines,
-            width_mult=2,
-        )
-        # tab_menu.bind(on_dismiss=self.table_data.close_pagination_menu)
+    # def create_menu(self):
+    #     menu_items = [
+    #         {"text": f"{i}"}
+    #         for i in range(
+    #             10
+    #         )
+    #     ]
+    #     self.tab_menu = MDDropdownMenu(
+    #         caller=self,
+    #         items=menu_items,
+    #         use_icon_item=False,
+    #         position="auto",
+    #         max_height=300,
+    #         # callback=self.table_data.set_number_displayed_lines,
+    #         width_mult=2,
+    #     )
+    #     # tab_menu.bind(on_dismiss=self.table_data.close_pagination_menu)
 
-    def open_menu(self):
-        self.tab_menu.open()
+    # def open_menu(self):
+    #     self.tab_menu.open()
 
     def set_state(self, state:str, color:tuple):
+        """ Sets current state to tab and change its color """
         self.state = state
         self.color = color
         self.do_background()

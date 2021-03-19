@@ -9,7 +9,7 @@ FloatLayout:
         padding: 0, SYSTEM_BAR_HEIGHT, IMAGE_TOOLBAR_WIDTH, SYSTEM_INFO_BAR_HEIGHT
         BoxLayout:
             padding: 10,10,10,10
-            orientation: "vertical"  
+            orientation: "vertical"
             Tabs:
                 id: dataTabs
                 dataStore: dataStore
@@ -61,6 +61,10 @@ FloatLayout:
             dataStore: dataStore
             DataToolbarItem:
             DataToolbarItem:
+                id: remakeNonNumericData
+                text: "Remake"
+                on_release: dataToolbar.remake_non_numeric_data()
+
             DataToolbarItem:
                 id: createDescription
                 on_release: dataToolbar.create_description()

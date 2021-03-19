@@ -1,4 +1,5 @@
 from gui.behaviours.switchtab import TabSwitchBehavior
+from loguru import logger
 
 
 class SwitchTableBehaviour(TabSwitchBehavior):
@@ -21,7 +22,6 @@ class SwitchTableBehaviour(TabSwitchBehavior):
             try:
                 self.remove_widget(self.data_tables[self.curr_data_table]) # delete current
             except KeyError:
-                # no current tab
-                pass
+                logger.warning(f"Try to remove table with index {index} when there's no such table in the screen")
             self.curr_data_table = index
             self.add_widget(table)

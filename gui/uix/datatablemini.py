@@ -1,6 +1,7 @@
 import pandas as pd
 from gui.uix.basedatatable import BaseDataTable
-
+from kivymd.uix.datatables import CellRow, CellHeader
+from functools import partial
 
 class DataTableMini(BaseDataTable):
     """ Mini data table with 5-6 first values and 5-6 end values """

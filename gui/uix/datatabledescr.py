@@ -28,7 +28,9 @@ class DataTableDescription(BaseDataTable):
         np_data = data.to_numpy()
         mod_data = []
         for idx, row in enumerate(np_data):
-            mod_data.append([self.statistics[idx]] + [f"{x}" if len(str(x).split('.')[-1]) < 5 else f"{x:.5f}" for x in row])
+            mod_data.append(
+                [self.statistics[idx]] + \
+                [f"{x}" if len(str(x).split('.')[-1]) < 5 else f"{x:.5f}" for x in row])
         return mod_data
 
     def preform_column(slef, data:pd.array):
