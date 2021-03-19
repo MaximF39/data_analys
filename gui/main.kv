@@ -5,11 +5,15 @@
 #:set SYSTEM_INFO_BAR_HEIGHT 20
 
 FloatLayout:
+    Metrics:
+        id: metrics
+        dataStore: dataStore
+        dataTabs: dataTabs
     BoxLayout:
         padding: 0, SYSTEM_BAR_HEIGHT, IMAGE_TOOLBAR_WIDTH, SYSTEM_INFO_BAR_HEIGHT
         BoxLayout:
             padding: 10,10,10,10
-            orientation: "vertical"  
+            orientation: "vertical"
             Tabs:
                 id: dataTabs
                 dataStore: dataStore
@@ -57,8 +61,6 @@ FloatLayout:
         size_hint_y: None
         height: Window.height - SYSTEM_BAR_HEIGHT
         DataToolbar:
-            id: dataToolbar
-            dataStore: dataStore
             DataToolbarItem:
                 icon: "icon/original.png"
             DataToolbarItem:
@@ -73,8 +75,11 @@ FloatLayout:
                 icon: "icon/settings.png"
             DataToolbarItem:
                 icon: "icon/quit.png"
+                id: remakeNonNumericData
+                on_release: metrics.remake_non_numeric_data()
+
     BoxLayout:
-        id: sistemInfoBar
+        id: systemInfoBar
         orientation: "horizontal"
         size_hint_y: None
         height: SYSTEM_INFO_BAR_HEIGHT
@@ -92,3 +97,4 @@ FloatLayout:
                 Rectangle:
                     size: self.size
                     pos: self.pos
+
