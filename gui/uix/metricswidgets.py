@@ -4,22 +4,20 @@ from loguru import logger
 from gui.uix.datatabledescr import DataTableDescription
 from kivy.properties import ObjectProperty
 from gui.uix.tabs import Tabs
+from gui.uix.datastore import DataManager
 
 
-class MetricsWidgets:
-    """  """
+class Metrics(Widget):
+    """ Must be used only with DataStore """
 
-    data_tables: dict = {}
-    """ Represent all conserning to data widget instances """
-
-    shown_metrics_idxs: list = []
-    """ Contains all shown metrics indexes """
-
-    curr_data_table:str = '0'
-    """ Index if the current data_table """
+    dataStore: ObjectProperty(None)
+    """ Where all dataBox'es are stored """
 
     dataTabs: Tabs = ObjectProperty(None)
     """ Represent all data tabs """
+
+    shown_metrics_idxs: list = []
+    """ Contains all shown metrics indexes """
     
     def get_metric_index(self, index:str, metric_name:str) -> str:
         """ Makes a metric index """
@@ -38,38 +36,34 @@ class MetricsWidgets:
         """
         m_index = self.get_metric_index(index, metric_name)
 
-        if not self.data_tables.get(m_index):
-            self.data_tables[m_index] = widget
+        if not self.dataStore.get_table(m_index):
+            self.dataStore.add_table(m_index, widget)
         self.__show_data_metrics(m_index)
         
     def __show_data_metrics(self, m_index:str):
         """ Very similar with on_drop_file """
-        metric = self.data_tables.get(m_index)
+        metric = self.dataStore.get_table(m_index)
         if metric:
             self.shown_metrics_idxs.append(m_index)
+            self.dataStore.dispatch("on_table_switch", m_index)
             self.dataTabs.dispatch('on_drop_file', metric.filepath, m_index)
-            self.dispatch("on_table_switch", m_index)
 
     def remake_non_numeric_data(self):
-        try:
-            table = self.data_tables.get(self.curr_data_table)
-        except KeyError:
-            logger.warning("Calls when there's no opened data table")
+        pass
 
     def create_description(self):
         """ If there's opened data table makes a description for it 
             and place it on a new tab
         """
         metric_name = "description"
-        
+        idx = self.dataStore.get_cur_table_index # curent table index
         if self.__metric_can_be_made(metric_name):
-            tb = self.data_tables[self.curr_data_table]
+            tb = self.dataStore.get_table(idx)
             metric = DataTableDescription(
                 tb.filepath,
                 tb.data
             )
-            del tb
-            self.__place_new_tab(self.curr_data_table, metric, metric_name)
+            self.__place_new_tab(idx, metric, metric_name)
     
     def __metric_can_be_made(self, metric_name:str) -> bool:
         """ Checks if metric can be created.
@@ -77,12 +71,12 @@ class MetricsWidgets:
                 there's no such metric in data_tables
             It garanties that self.curr_data_table index refers to a proper widget
         """
-        index = self.curr_data_table
+        index = self.dataStore.get_cur_table_index
         metric_index = self.get_metric_index(index, metric_name)
-        active_table = self.data_tables.get(index) # table
-        active_metric = self.data_tables.get(metric_index)
+        active_table = self.dataStore.get_table(index) # table
+        active_metric = self.dataStore.get_table(metric_index)
         if active_metric:
-            self.dispatch('on_table_switch', metric_index)
+            self.dataStore.dispatch('on_table_switch', metric_index)
             self.dataTabs.to_tab_by_index(metric_index)
             return False
         if active_table and self.is_not_metric(index):

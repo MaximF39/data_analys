@@ -29,19 +29,9 @@ from kivy.uix.behaviors import ButtonBehavior
 
 
 class DataToolbar(BoxLayout):
-
-    dataStore: DataStore = ObjectProperty(None)
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def create_description(self):
-        """ Create and opens a new tab with described data """
-        self.dataStore.create_description()
-
-    def remake_non_numeric_data(self):
-        """ Opens a new screen to redact data by hands """
-        self.dataStore.remake_non_numeric_data()
 
 class DataToolbarItem(MDTextButton):
     pass

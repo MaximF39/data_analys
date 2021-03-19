@@ -26,7 +26,7 @@ Builder.load_string(
         icon: "close"
         ripple_rad_default: 0.5
         user_font_size: "15sp"
-        on_release: root.on_ref_press()
+        on_release: root.close_pressed()
 """
 )
 class ShortenLabel(MDLabel, PathStringShorter):
@@ -49,8 +49,6 @@ class ShortenLabel(MDLabel, PathStringShorter):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.parent_.on_tab_switch()
-            if touch.is_double_tap:
-                self.parent_.open_menu()
             return True
 
 class Tab(BoxLayout):
@@ -83,28 +81,6 @@ class Tab(BoxLayout):
         self.filepath = filepath
         self.tab_label_inst.parent_ = self
         self.tab_label_inst.update_text(filepath)
-        # self.create_menu()
-
-    # def create_menu(self):
-    #     menu_items = [
-    #         {"text": f"{i}"}
-    #         for i in range(
-    #             10
-    #         )
-    #     ]
-    #     self.tab_menu = MDDropdownMenu(
-    #         caller=self,
-    #         items=menu_items,
-    #         use_icon_item=False,
-    #         position="auto",
-    #         max_height=300,
-    #         # callback=self.table_data.set_number_displayed_lines,
-    #         width_mult=2,
-    #     )
-    #     # tab_menu.bind(on_dismiss=self.table_data.close_pagination_menu)
-
-    # def open_menu(self):
-    #     self.tab_menu.open()
 
     def set_state(self, state:str, color:tuple):
         """ Sets current state to tab and change its color """
@@ -127,9 +103,9 @@ class Tab(BoxLayout):
         self.canvas.ask_update()
         self.do_background()
             
-    def on_ref_press(self):
+    def close_pressed(self):
         """ Calls when close button is pressed """
-        self.parent_.dispatch('on_ref_press', self)
+        self.parent_.dispatch('on_delete_tab', self)
 
     def on_tab_switch(self):
         """ Calls when close button is pressed """
@@ -140,9 +116,9 @@ class Tabs(MDStackLayout, TabSwitchBehavior):
 
     adaptive_width: bool = True
 
-    current_active_tab = None
+    curr_tab_idx = None
 
-    prev_active_tab = None
+    prev_tab_idx = None
 
     tab_active_color: tuple = (0.3, 0.3 ,0.3, 1)
     tab_normal_color: tuple = (0.55, 0.55, 0.55, 1)
@@ -179,21 +155,14 @@ class Tabs(MDStackLayout, TabSwitchBehavior):
 
     def set_current_active_tab(self, tab):
         try:
-            self.current_active_tab.set_state('down', self.tab_states['down'])
+            self.curr_tab_idx.set_state('down', self.tab_states['down'])
         except AttributeError:
+            # curr_tab_idx is None
             pass
-        try:
-            tab.set_state('up', self.tab_states['up'])
-        except AttributeError:
-            # got NoneType
-            pass
-
-        self.prev_active_tab = self.current_active_tab
-        self.current_active_tab = tab
+        tab.set_state('up', self.tab_states['up'])
+        self.prev_tab_idx = self.curr_tab_idx
+        self.curr_tab_idx= tab
     
-    def set_non_active(self, tab):
-        tab.set_state('down', self.tab_states['down'])
-
     def to_tab_by_index(self, index:str):
         """ Forse switch to tab """
         for tab in self.children:
@@ -201,9 +170,7 @@ class Tabs(MDStackLayout, TabSwitchBehavior):
                 self.set_current_active_tab(tab)
                 break
             
-    def on_ref_press(
-        self,
-        tab_instance):
+    def on_delete_tab(self, tab_instance:Tab):
         self.remove_widget(tab_instance)
         self.dataStore.dispatch('on_delete_tab', tab_instance.index)
         self.pathInfo.dispatch('on_delete_tab', tab_instance.index)
