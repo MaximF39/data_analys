@@ -3,6 +3,7 @@ import os
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
 from kivymd.app import MDApp
+from loguru import logger
 
 
 class BaseDropBehaviour(EventDispatcher):
@@ -31,8 +32,8 @@ class BaseDropBehaviour(EventDispatcher):
                 self.dispatch('on_drop_file', filepath_path)
             else:
                 # make a pop up message
-                print('File is not supported')
-    
+                pass
+                
     def process_file(self, file_path:str):
         """ Fills all needed properties and reads the file """
         raise NotImplementedError(f"Method does not implemented 'process_file'")
@@ -44,4 +45,6 @@ class BaseDropBehaviour(EventDispatcher):
         filename = os.path.split(file_path)[-1]
         if filename.split('.')[-1] in self.supported_ext:
             return True
+        
+        logger.warning(f'Dropped file is not supported {filename}')
         return False

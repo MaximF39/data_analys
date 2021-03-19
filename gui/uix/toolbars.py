@@ -5,6 +5,7 @@ from kivy.uix.widget import Widget
 from kivymd.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDTextButton
 from gui.uix.datatabledescr import DataTableDescription
+from gui.uix.datastore import DataStore
 
 Builder.load_string(
 """
@@ -28,21 +29,9 @@ from kivy.uix.behaviors import ButtonBehavior
 
 
 class DataToolbar(BoxLayout):
-
-    dataStore = ObjectProperty(None)
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def create_description(self):
-        index = self.dataStore.curr_data_table
-        active_table = self.dataStore.data_tables.get(index)
-        if active_table:
-            metric = DataTableDescription(
-                active_table.filepath,
-                active_table.data
-            )
-            self.dataStore.place_new_tab(index, metric)
 
 class DataToolbarItem(MDTextButton):
     pass

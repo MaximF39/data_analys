@@ -11,6 +11,7 @@ from gui.uix.tabs import Tabs
 from gui.uix.datastore import DataStore
 from gui.uix.toolbars import DataToolbar
 from gui.uix.pathinfo import PathInfo
+from gui.uix.metricswidgets import Metrics
 from setting import BASE_DIR
 
 
